@@ -43,7 +43,7 @@ namespace EncryptLib
         public static string AES256Encrypt(string data)
         {
             IBufferedCipher cipherEncrypt = CipherUtilities.GetCipher(Algorithm);
-            byte[] vector = GenHMAC();
+            byte[] vector = new SecureRandom().GenerateSeed(IVLength);
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(PrivateKey), vector);
             cipherEncrypt.Init(true, parameters);
             byte[] ciphered = cipherEncrypt.DoFinal(Encoding.UTF8.GetBytes(data));
@@ -59,11 +59,6 @@ namespace EncryptLib
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(PrivateKey), vector);
             cipherDecrypt.Init(false, parameters);
             return Encoding.UTF8.GetString(cipherDecrypt.DoFinal(ciphered));
-        }
-
-        private static byte[] GenHMAC()
-        {
-            return new SecureRandom().GenerateSeed(IVLength);
         }
 
         public static void SetWebConfig (IConfiguration configuration)
