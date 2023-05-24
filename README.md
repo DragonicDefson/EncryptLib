@@ -9,6 +9,7 @@ Easy encryption library
 using EncryptLib.Security;
 
 private void ExampleMethod () {
+    SetAppConfig();
     string data = "example-data";
     string encrypted = AES256Encrypt(data);
     string decrypted = AES256Decrypt(encrypted);
