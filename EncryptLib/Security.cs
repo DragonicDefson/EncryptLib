@@ -53,8 +53,9 @@ namespace EncryptLib
         public static string AES256Decrypt(string data)
         {
             IBufferedCipher cipherDecrypt = CipherUtilities.GetCipher(Algorithm);
-            byte[] vector = Convert.FromBase64String(data.Split(IVSeperator)[1]);
-            byte[] ciphered = Convert.FromBase64String(data.Split(IVSeperator)[0]);
+            string[] splitData = data.Split(IVSeperator);
+            byte[] vector = Convert.FromBase64String(splitData[1]);
+            byte[] ciphered = Convert.FromBase64String(splitData[0]);
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(PrivateKey), vector);
             cipherDecrypt.Init(false, parameters);
             return Encoding.UTF8.GetString(cipherDecrypt.DoFinal(ciphered));
